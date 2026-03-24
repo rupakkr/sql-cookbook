@@ -1,48 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL Cookbook — Searchable Snippets</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SQL Cookbook</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0d12;
+  --surface:#111520;
+  --card:#131825;
+  --card-border:#1e2535;
+  --code-bg:#0d111a;
+  --text:#e2e8f4;
+  --muted:#5a6380;
+  --muted2:#8491b0;
+  --accent:#38bdf8;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+
+/* header */
+header{padding:2rem 3rem 1.5rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.logo h1{font-size:1.75rem;font-weight:700;letter-spacing:-0.5px;color:#fff}
+.logo p{font-size:0.78rem;color:var(--muted2);margin-top:3px}
+.stats-pill{background:#0f1a2e;border:1px solid #1e3050;border-radius:999px;padding:6px 14px;font-size:12px;color:var(--accent);font-family:var(--mono);white-space:nowrap;align-self:flex-start}
+
+/* search */
+.search-section{padding:0 3rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:1.25rem}
+.search-wrap{position:relative;width:100%;max-width:620px}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
+#search{width:100%;padding:12px 16px 12px 42px;background:#0e1320;border:1px solid #1e2840;border-radius:999px;color:var(--text);font-size:14px;font-family:var(--sans);outline:none;transition:border-color .2s}
+#search:focus{border-color:#2a4a80}
+#search::placeholder{color:var(--muted)}
+
+/* pills */
+.pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pill{padding:5px 18px;border-radius:999px;border:1px solid #1e2840;background:transparent;color:var(--muted2);font-size:13px;font-family:var(--sans);cursor:pointer;transition:all .15s}
+.pill:hover{background:#0f1a2e;color:var(--text)}
+.pill.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+
+/* divider */
+.divider{height:1px;background:#151d2e;margin-bottom:2rem}
+
+/* grid */
+.grid-section{padding:0 2.5rem;flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+
+/* card */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:1.4rem 1.4rem 1.2rem;display:flex;flex-direction:column;gap:12px;transition:border-color .2s,transform .15s}
+.card:hover{border-color:#263050;transform:translateY(-1px)}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.card-title{font-size:1rem;font-weight:600;color:var(--accent);letter-spacing:-0.2px}
+.badge{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;font-family:var(--mono);padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.desc{font-size:13px;color:var(--muted2);line-height:1.6}
+
+/* tabs */
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{font-size:10px;padding:3px 9px;border:1px solid #1e2840;border-radius:5px;cursor:pointer;background:transparent;color:var(--muted);font-family:var(--sans);text-transform:uppercase;letter-spacing:.5px;transition:all .15s}
+.tab:hover{background:#0f1a2e;color:var(--text)}
+.tab.active{background:#0a1828;color:var(--accent);border-color:#1e4070}
+
+/* code */
+.code-wrap{position:relative}
+.snippet-label{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);padding:8px 10px 4px}
+.code-block{background:var(--code-bg);border:1px solid #181f30;border-radius:8px;padding:8px 36px 10px 10px;font-size:12px;font-family:var(--mono);color:#a8bcd8;white-space:pre;overflow-x:auto;line-height:1.75}
+.code-block::-webkit-scrollbar{height:3px}
+.code-block::-webkit-scrollbar-thumb{background:#1e2840;border-radius:3px}
+.copy-btn{position:absolute;bottom:8px;right:8px;background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:4px;transition:color .15s;display:flex;align-items:center}
+.copy-btn:hover{color:var(--text)}
+.copy-btn.ok{color:#4ade80}
+.copy-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.empty{grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);font-size:14px}
+
+footer{text-align:center;padding:2.5rem;font-size:13px;color:var(--muted);margin-top:2rem}
+
+@media(max-width:640px){
+  header,.search-section,.grid-section{padding-left:1.25rem;padding-right:1.25rem}
+  .grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-<body class="dark-theme">
-    <header>
-        <div class="header-content">
-            <div class="logo-area">
-                <h1>SQL Cookbook</h1>
-                <p class="subtitle">by krupak • every query, copy-ready</p>
-            </div>
-            <div class="stats">
-                <span id="topic-count">0</span> topics • <span id="snippet-count">0</span> snippets
-            </div>
-        </div>
-        
-        <div class="search-container">
-            <div class="search-wrapper">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" id="search-input" placeholder="Search commands, descriptions, snippets..." autocomplete="off">
-            </div>
-        </div>
+<body>
 
-        <div class="filter-container" id="filter-pills">
-            <button class="filter-pill active" data-category="all">all</button>
-            <!-- Categories will be dynamically injected here -->
-        </div>
-    </header>
+<header>
+  <div class="logo">
+    <h1 id="app-title">SQL Cookbook</h1>
+    <p id="app-subtitle">by krupak • every query, copy-ready</p>
+  </div>
+  <div class="stats-pill" id="stats">loading…</div>
+</header>
 
-    <main id="cookbook-grid" class="grid-container">
-        <!-- Cards will be dynamically injected here -->
-    </main>
+<div class="search-section">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="search" type="text" placeholder="Search commands, descriptions, snippets…" autocomplete="off"/>
+  </div>
+  <div class="pills" id="pills"></div>
+</div>
 
-    <footer class="footer">
-        <p>Built with ❤️ for SQL enthusiasts.</p>
-    </footer>
+<div class="divider"></div>
 
-    <script src="data.js"></script>
-    <script src="script.js"></script>
+<div class="grid-section">
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer id="footer">Built with ❤️ for SQL enthusiasts.</footer>
+
+<script>
+const DATA_SRC = 'snippets.json';
+let allData=[], config={}, activeTab={}, activeCat='all';
+
+async function init(){
+  let payload;
+  try{
+    const res = await fetch(DATA_SRC);
+    if(!res.ok) throw new Error();
+    payload = await res.json();
+  }catch(e){
+    document.getElementById('grid').innerHTML=
+      `<div class="empty">Could not load <code>${DATA_SRC}</code>.<br>Serve both files over HTTP — e.g. <code>npx serve .</code></div>`;
+    document.getElementById('stats').textContent='error';
+    return;
+  }
+  config  = payload.config  || {};
+  allData = payload.snippets || [];
+
+  if(config.title)       document.getElementById('app-title').textContent    = config.title;
+  if(config.subtitle)    document.getElementById('app-subtitle').textContent  = config.subtitle;
+  if(config.footer)      document.getElementById('footer').textContent        = config.footer;
+  if(config.accentColor) document.documentElement.style.setProperty('--accent', config.accentColor);
+
+  buildPills();
+  render();
+  document.getElementById('search').addEventListener('input', render);
+}
+
+function buildPills(){
+  const cats = ['all', ...new Set(allData.map(d=>d.category.toLowerCase()))];
+  document.getElementById('pills').innerHTML = cats.map(c=>
+    `<button class="pill${c===activeCat?' active':''}" data-cat="${c}">${c}</button>`
+  ).join('');
+  document.getElementById('pills').addEventListener('click', e=>{
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    activeCat = btn.dataset.cat;
+    document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active', p.dataset.cat===activeCat));
+    render();
+  });
+}
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const filtered = allData.filter(d=>{
+    const matchCat = activeCat==='all' || d.category.toLowerCase()===activeCat;
+    const matchQ   = !q ||
+      d.title.toLowerCase().includes(q)||
+      d.description.toLowerCase().includes(q)||
+      d.category.toLowerCase().includes(q)||
+      d.snippets.some(s=>s.code.toLowerCase().includes(q)||s.label.toLowerCase().includes(q));
+    return matchCat && matchQ;
+  });
+
+  const topics = new Set(filtered.map(d=>d.category)).size;
+  document.getElementById('stats').textContent =
+    `${topics} topic${topics!==1?'s':''} • ${filtered.length} snippet${filtered.length!==1?'s':''}`;
+
+  if(!filtered.length){
+    document.getElementById('grid').innerHTML='<div class="empty">No snippets match your search.</div>';
+    return;
+  }
+
+  document.getElementById('grid').innerHTML = filtered.map(d=>{
+    const tid  = activeTab[d.id]||0;
+    const safe = d.id.replace(/[^a-z0-9]/gi,'-');
+    const snip = d.snippets[tid]||d.snippets[0];
+    const bs   = badgeStyle(d.category);
+
+    const tabs = d.snippets.length>1
+      ? `<div class="tabs">${d.snippets.map((s,i)=>
+          `<button class="tab${i===tid?' active':''}" data-id="${d.id}" data-i="${i}">${esc(s.label)}</button>`
+        ).join('')}</div>`
+      : '';
+
+    return `<div class="card">
+      <div class="card-head">
+        <span class="card-title">${esc(d.title)}</span>
+        <span class="badge" style="${bs}">${esc(d.category)}</span>
+      </div>
+      <p class="desc">${esc(d.description)}</p>
+      ${tabs}
+      <div class="code-wrap">
+        <div class="snippet-label">${esc(snip.label)}</div>
+        <pre class="code-block" id="code-${safe}">${esc(snip.code)}</pre>
+        <button class="copy-btn" data-target="code-${safe}" title="Copy">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('grid').querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{ activeTab[btn.dataset.id]=parseInt(btn.dataset.i); render(); });
+  });
+
+  document.getElementById('grid').querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const text = document.getElementById(btn.dataset.target)?.textContent||'';
+      navigator.clipboard.writeText(text).then(()=>{
+        btn.classList.add('ok');
+        btn.innerHTML='<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+        setTimeout(()=>{
+          btn.classList.remove('ok');
+          btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        },1500);
+      });
+    });
+  });
+}
+
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function badgeStyle(cat){
+  const pair = (config.badgeColors||{})[cat];
+  if(pair) return `background:${pair.bg};color:${pair.text}`;
+  return 'background:#0a1828;color:#38bdf8';
+}
+
+init();
+</script>
 </body>
 </html>
