@@ -9,17 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const topicCount = document.getElementById('topic-count');
     const snippetCount = document.getElementById('snippet-count');
 
-    // Fetch and Load Data
-    const loadData = async () => {
+    // Load Data directly from data.js
+    const loadData = () => {
         try {
-            const response = await fetch('snippets.json');
-            allData = await response.json();
+            allData = SQL_DATA;
             renderFilters();
             renderGrid();
             updateStats();
         } catch (error) {
             console.error('Error loading data:', error);
-            cookbookGrid.innerHTML = '<p class="error">Error loading snippets. Please check snippets.json.</p>';
+            cookbookGrid.innerHTML = '<p class="error">Error loading snippets. Please check data.js.</p>';
         }
     };
 
