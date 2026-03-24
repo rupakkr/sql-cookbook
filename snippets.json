@@ -1,38 +1,410 @@
-[
-  {
-    "id": "select-all",
-    "title": "SELECT All",
-    "category": "Basic",
-    "description": "Retrieves all columns and rows from a table.",
-    "snippets": [
-      {
-        "label": "Standard",
-        "code": "SELECT * FROM table_name;"
-      }
-    ]
+{
+  "config": {
+    "title": "SQL Snippet Reference",
+    "subtitle": "A searchable collection of essential SQL patterns",
+    "accentColor": "#1a6ef5",
+    "badgeColors": {
+      "Basic":            { "bg": "#E6F1FB", "text": "#0C447C" },
+      "Joins":            { "bg": "#E1F5EE", "text": "#085041" },
+      "Aggregation":      { "bg": "#FAEEDA", "text": "#633806" },
+      "Window Functions": { "bg": "#EEEDFE", "text": "#3C3489" },
+      "Advanced":         { "bg": "#FAECE7", "text": "#712B13" },
+      "DML":              { "bg": "#EAF3DE", "text": "#27500A" },
+      "DDL":              { "bg": "#FBEAF0", "text": "#72243E" },
+      "Functions":        { "bg": "#F1EFE8", "text": "#444441" }
+    }
   },
-  {
-    "id": "select-distinct",
-    "title": "SELECT Distinct",
-    "category": "Basic",
-    "description": "Retrieves only unique values from a column.",
-    "snippets": [
-      {
-        "label": "Single Column",
-        "code": "SELECT DISTINCT column_name FROM table_name;"
-      }
-    ]
-  },
-  {
-    "id": "inner-join",
-    "title": "Inner Join",
-    "category": "Joins",
-    "description": "Combines rows from two tables based on a related column.",
-    "snippets": [
-      {
-        "label": "Basic Inner Join",
-        "code": "SELECT A.col1, B.col2\nFROM TableA A\nINNER JOIN TableB B ON A.id = B.a_id;"
-      }
-    ]
-  }
-]
+  "snippets": [
+    {
+      "id": "select-all",
+      "title": "SELECT all",
+      "category": "Basic",
+      "description": "Retrieves all columns and rows from a table.",
+      "snippets": [
+        { "label": "Standard", "code": "SELECT * FROM table_name;" }
+      ]
+    },
+    {
+      "id": "select-columns",
+      "title": "SELECT specific columns",
+      "category": "Basic",
+      "description": "Retrieves only the specified columns from a table.",
+      "snippets": [
+        { "label": "Standard", "code": "SELECT col1, col2, col3\nFROM table_name;" }
+      ]
+    },
+    {
+      "id": "select-distinct",
+      "title": "SELECT distinct",
+      "category": "Basic",
+      "description": "Retrieves only unique values from a column.",
+      "snippets": [
+        { "label": "Single column",    "code": "SELECT DISTINCT column_name\nFROM table_name;" },
+        { "label": "Multiple columns", "code": "SELECT DISTINCT col1, col2\nFROM table_name;" }
+      ]
+    },
+    {
+      "id": "where",
+      "title": "WHERE clause",
+      "category": "Basic",
+      "description": "Filters rows based on a condition.",
+      "snippets": [
+        { "label": "Equals",             "code": "SELECT * FROM table_name\nWHERE column_name = 'value';" },
+        { "label": "Multiple conditions","code": "SELECT * FROM table_name\nWHERE col1 = 'value' AND col2 > 10;" }
+      ]
+    },
+    {
+      "id": "order-by",
+      "title": "ORDER BY",
+      "category": "Basic",
+      "description": "Sorts the result set in ascending or descending order.",
+      "snippets": [
+        { "label": "Ascending",         "code": "SELECT * FROM table_name\nORDER BY column_name ASC;" },
+        { "label": "Descending",        "code": "SELECT * FROM table_name\nORDER BY column_name DESC;" },
+        { "label": "Multiple columns",  "code": "SELECT * FROM table_name\nORDER BY col1 ASC, col2 DESC;" }
+      ]
+    },
+    {
+      "id": "limit",
+      "title": "LIMIT / TOP",
+      "category": "Basic",
+      "description": "Restricts the number of rows returned.",
+      "snippets": [
+        { "label": "MySQL / PostgreSQL", "code": "SELECT * FROM table_name\nLIMIT 10;" },
+        { "label": "SQL Server",         "code": "SELECT TOP 10 *\nFROM table_name;" }
+      ]
+    },
+    {
+      "id": "like",
+      "title": "LIKE (pattern match)",
+      "category": "Basic",
+      "description": "Filters rows where a column matches a pattern.",
+      "snippets": [
+        { "label": "Starts with", "code": "SELECT * FROM table_name\nWHERE name LIKE 'A%';" },
+        { "label": "Contains",    "code": "SELECT * FROM table_name\nWHERE name LIKE '%word%';" },
+        { "label": "Ends with",   "code": "SELECT * FROM table_name\nWHERE name LIKE '%Z';" }
+      ]
+    },
+    {
+      "id": "in",
+      "title": "IN clause",
+      "category": "Basic",
+      "description": "Filters rows matching any value in a list.",
+      "snippets": [
+        { "label": "Value list", "code": "SELECT * FROM table_name\nWHERE col IN ('a', 'b', 'c');" },
+        { "label": "Subquery",   "code": "SELECT * FROM table_name\nWHERE col IN (SELECT id FROM other_table);" }
+      ]
+    },
+    {
+      "id": "between",
+      "title": "BETWEEN",
+      "category": "Basic",
+      "description": "Filters rows within a range of values.",
+      "snippets": [
+        { "label": "Numeric range", "code": "SELECT * FROM table_name\nWHERE age BETWEEN 18 AND 65;" },
+        { "label": "Date range",    "code": "SELECT * FROM table_name\nWHERE created_at BETWEEN '2024-01-01' AND '2024-12-31';" }
+      ]
+    },
+    {
+      "id": "is-null",
+      "title": "IS NULL / IS NOT NULL",
+      "category": "Basic",
+      "description": "Checks whether a column value is null.",
+      "snippets": [
+        { "label": "Is null",     "code": "SELECT * FROM table_name\nWHERE column_name IS NULL;" },
+        { "label": "Is not null", "code": "SELECT * FROM table_name\nWHERE column_name IS NOT NULL;" }
+      ]
+    },
+    {
+      "id": "inner-join",
+      "title": "INNER JOIN",
+      "category": "Joins",
+      "description": "Returns rows with matching values in both tables.",
+      "snippets": [
+        { "label": "Basic", "code": "SELECT A.col1, B.col2\nFROM TableA A\nINNER JOIN TableB B ON A.id = B.a_id;" }
+      ]
+    },
+    {
+      "id": "left-join",
+      "title": "LEFT JOIN",
+      "category": "Joins",
+      "description": "Returns all rows from the left table, matched rows from right.",
+      "snippets": [
+        { "label": "Basic",              "code": "SELECT A.col1, B.col2\nFROM TableA A\nLEFT JOIN TableB B ON A.id = B.a_id;" },
+        { "label": "Unmatched rows only","code": "SELECT A.*\nFROM TableA A\nLEFT JOIN TableB B ON A.id = B.a_id\nWHERE B.a_id IS NULL;" }
+      ]
+    },
+    {
+      "id": "right-join",
+      "title": "RIGHT JOIN",
+      "category": "Joins",
+      "description": "Returns all rows from the right table, matched rows from left.",
+      "snippets": [
+        { "label": "Basic", "code": "SELECT A.col1, B.col2\nFROM TableA A\nRIGHT JOIN TableB B ON A.id = B.a_id;" }
+      ]
+    },
+    {
+      "id": "full-join",
+      "title": "FULL OUTER JOIN",
+      "category": "Joins",
+      "description": "Returns all rows when there is a match in either table.",
+      "snippets": [
+        { "label": "Basic", "code": "SELECT A.col1, B.col2\nFROM TableA A\nFULL OUTER JOIN TableB B ON A.id = B.a_id;" }
+      ]
+    },
+    {
+      "id": "self-join",
+      "title": "SELF JOIN",
+      "category": "Joins",
+      "description": "Joins a table to itself, useful for hierarchical data.",
+      "snippets": [
+        { "label": "Employee manager", "code": "SELECT e.name AS employee, m.name AS manager\nFROM employees e\nJOIN employees m ON e.manager_id = m.id;" }
+      ]
+    },
+    {
+      "id": "cross-join",
+      "title": "CROSS JOIN",
+      "category": "Joins",
+      "description": "Returns the Cartesian product of two tables.",
+      "snippets": [
+        { "label": "Basic", "code": "SELECT A.col1, B.col2\nFROM TableA A\nCROSS JOIN TableB B;" }
+      ]
+    },
+    {
+      "id": "group-by",
+      "title": "GROUP BY",
+      "category": "Aggregation",
+      "description": "Groups rows sharing a property to apply aggregate functions.",
+      "snippets": [
+        { "label": "Basic",       "code": "SELECT department, COUNT(*)\nFROM employees\nGROUP BY department;" },
+        { "label": "With HAVING", "code": "SELECT department, COUNT(*) AS cnt\nFROM employees\nGROUP BY department\nHAVING cnt > 5;" }
+      ]
+    },
+    {
+      "id": "agg-functions",
+      "title": "Aggregate functions",
+      "category": "Aggregation",
+      "description": "Compute summary values across rows.",
+      "snippets": [
+        { "label": "Common aggregates", "code": "SELECT\n  COUNT(*)    AS total_rows,\n  SUM(salary) AS total_salary,\n  AVG(salary) AS avg_salary,\n  MIN(salary) AS min_salary,\n  MAX(salary) AS max_salary\nFROM employees;" }
+      ]
+    },
+    {
+      "id": "window-rank",
+      "title": "Window — RANK / ROW_NUMBER",
+      "category": "Window Functions",
+      "description": "Assigns ranks or sequential numbers to rows within a partition.",
+      "snippets": [
+        { "label": "ROW_NUMBER",       "code": "SELECT name, salary,\n  ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn\nFROM employees;" },
+        { "label": "RANK & DENSE_RANK","code": "SELECT name, salary,\n  RANK()       OVER (ORDER BY salary DESC) AS rnk,\n  DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk\nFROM employees;" }
+      ]
+    },
+    {
+      "id": "window-lag-lead",
+      "title": "Window — LAG / LEAD",
+      "category": "Window Functions",
+      "description": "Accesses values from previous or next rows in the result set.",
+      "snippets": [
+        { "label": "LAG",  "code": "SELECT date, revenue,\n  LAG(revenue)  OVER (ORDER BY date) AS prev_revenue\nFROM sales;" },
+        { "label": "LEAD", "code": "SELECT date, revenue,\n  LEAD(revenue) OVER (ORDER BY date) AS next_revenue\nFROM sales;" }
+      ]
+    },
+    {
+      "id": "window-sum",
+      "title": "Window — running total",
+      "category": "Window Functions",
+      "description": "Computes a cumulative sum over an ordered partition.",
+      "snippets": [
+        { "label": "Running total", "code": "SELECT date, amount,\n  SUM(amount) OVER (ORDER BY date ROWS UNBOUNDED PRECEDING) AS running_total\nFROM transactions;" }
+      ]
+    },
+    {
+      "id": "cte",
+      "title": "CTE (Common Table Expression)",
+      "category": "Advanced",
+      "description": "Defines a named temporary result set for use within a query.",
+      "snippets": [
+        { "label": "Basic CTE",      "code": "WITH cte AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM employees\n  GROUP BY department\n)\nSELECT * FROM cte WHERE avg_sal > 50000;" },
+        { "label": "Multiple CTEs",  "code": "WITH\n  dept_avg AS (\n    SELECT dept_id, AVG(salary) AS avg_sal FROM employees GROUP BY dept_id\n  ),\n  high_earners AS (\n    SELECT * FROM employees WHERE salary > 80000\n  )\nSELECT h.name, d.avg_sal\nFROM high_earners h\nJOIN dept_avg d ON h.dept_id = d.dept_id;" }
+      ]
+    },
+    {
+      "id": "recursive-cte",
+      "title": "Recursive CTE",
+      "category": "Advanced",
+      "description": "Traverses hierarchical or graph-like data recursively.",
+      "snippets": [
+        { "label": "Org hierarchy", "code": "WITH RECURSIVE org AS (\n  SELECT id, name, manager_id, 1 AS lvl\n  FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, o.lvl + 1\n  FROM employees e\n  JOIN org o ON e.manager_id = o.id\n)\nSELECT * FROM org ORDER BY lvl;" }
+      ]
+    },
+    {
+      "id": "subquery",
+      "title": "Subquery",
+      "category": "Advanced",
+      "description": "Embeds one query inside another.",
+      "snippets": [
+        { "label": "In WHERE",   "code": "SELECT * FROM employees\nWHERE salary > (SELECT AVG(salary) FROM employees);" },
+        { "label": "Correlated", "code": "SELECT e.name\nFROM employees e\nWHERE salary > (\n  SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id\n);" }
+      ]
+    },
+    {
+      "id": "case",
+      "title": "CASE expression",
+      "category": "Advanced",
+      "description": "Adds conditional logic inside a query.",
+      "snippets": [
+        { "label": "Simple CASE",   "code": "SELECT name,\n  CASE grade\n    WHEN 'A' THEN 'Excellent'\n    WHEN 'B' THEN 'Good'\n    ELSE 'Needs improvement'\n  END AS performance\nFROM students;" },
+        { "label": "Searched CASE", "code": "SELECT name, salary,\n  CASE\n    WHEN salary >= 100000 THEN 'High'\n    WHEN salary >= 50000  THEN 'Mid'\n    ELSE 'Low'\n  END AS band\nFROM employees;" }
+      ]
+    },
+    {
+      "id": "union",
+      "title": "UNION / UNION ALL",
+      "category": "Advanced",
+      "description": "Combines result sets from two or more SELECT statements.",
+      "snippets": [
+        { "label": "UNION (distinct)", "code": "SELECT name FROM table_a\nUNION\nSELECT name FROM table_b;" },
+        { "label": "UNION ALL",        "code": "SELECT name FROM table_a\nUNION ALL\nSELECT name FROM table_b;" }
+      ]
+    },
+    {
+      "id": "insert",
+      "title": "INSERT",
+      "category": "DML",
+      "description": "Adds new rows to a table.",
+      "snippets": [
+        { "label": "Single row",        "code": "INSERT INTO table_name (col1, col2)\nVALUES ('value1', 42);" },
+        { "label": "Multiple rows",     "code": "INSERT INTO table_name (col1, col2)\nVALUES\n  ('a', 1),\n  ('b', 2),\n  ('c', 3);" },
+        { "label": "Insert from SELECT","code": "INSERT INTO archive_table\nSELECT * FROM source_table\nWHERE created_at < '2023-01-01';" }
+      ]
+    },
+    {
+      "id": "update",
+      "title": "UPDATE",
+      "category": "DML",
+      "description": "Modifies existing rows in a table.",
+      "snippets": [
+        { "label": "Basic",            "code": "UPDATE table_name\nSET col1 = 'new_value', col2 = col2 + 1\nWHERE id = 10;" },
+        { "label": "Update with JOIN", "code": "UPDATE employees e\nJOIN departments d ON e.dept_id = d.id\nSET e.salary = e.salary * 1.1\nWHERE d.name = 'Engineering';" }
+      ]
+    },
+    {
+      "id": "delete",
+      "title": "DELETE",
+      "category": "DML",
+      "description": "Removes rows from a table.",
+      "snippets": [
+        { "label": "With condition",    "code": "DELETE FROM table_name\nWHERE column_name = 'value';" },
+        { "label": "Delete with subquery","code": "DELETE FROM orders\nWHERE customer_id IN (\n  SELECT id FROM customers WHERE active = 0\n);" }
+      ]
+    },
+    {
+      "id": "create-table",
+      "title": "CREATE TABLE",
+      "category": "DDL",
+      "description": "Creates a new table in the database.",
+      "snippets": [
+        { "label": "Basic",            "code": "CREATE TABLE users (\n  id      INT PRIMARY KEY AUTO_INCREMENT,\n  name    VARCHAR(100) NOT NULL,\n  email   VARCHAR(255) UNIQUE,\n  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);" },
+        { "label": "With foreign key", "code": "CREATE TABLE orders (\n  id      INT PRIMARY KEY AUTO_INCREMENT,\n  user_id INT NOT NULL,\n  total   DECIMAL(10,2),\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);" }
+      ]
+    },
+    {
+      "id": "alter-table",
+      "title": "ALTER TABLE",
+      "category": "DDL",
+      "description": "Modifies an existing table structure.",
+      "snippets": [
+        { "label": "Add column",    "code": "ALTER TABLE table_name\nADD COLUMN new_col VARCHAR(100);" },
+        { "label": "Drop column",   "code": "ALTER TABLE table_name\nDROP COLUMN col_name;" },
+        { "label": "Rename column", "code": "ALTER TABLE table_name\nRENAME COLUMN old_name TO new_name;" }
+      ]
+    },
+    {
+      "id": "index",
+      "title": "CREATE INDEX",
+      "category": "DDL",
+      "description": "Creates an index to speed up queries on a column.",
+      "snippets": [
+        { "label": "Basic index",     "code": "CREATE INDEX idx_col ON table_name (column_name);" },
+        { "label": "Unique index",    "code": "CREATE UNIQUE INDEX idx_email ON users (email);" },
+        { "label": "Composite index", "code": "CREATE INDEX idx_name_dept ON employees (last_name, dept_id);" }
+      ]
+    },
+    {
+      "id": "view",
+      "title": "CREATE VIEW",
+      "category": "DDL",
+      "description": "Creates a virtual table based on a SELECT query.",
+      "snippets": [
+        { "label": "Basic view", "code": "CREATE VIEW active_users AS\nSELECT id, name, email\nFROM users\nWHERE active = 1;" }
+      ]
+    },
+    {
+      "id": "transaction",
+      "title": "Transactions",
+      "category": "Advanced",
+      "description": "Groups statements into an atomic unit of work.",
+      "snippets": [
+        { "label": "Basic transaction", "code": "BEGIN;\n  UPDATE accounts SET balance = balance - 500 WHERE id = 1;\n  UPDATE accounts SET balance = balance + 500 WHERE id = 2;\nCOMMIT;" },
+        { "label": "With rollback",     "code": "BEGIN;\n  DELETE FROM orders WHERE customer_id = 9;\nROLLBACK;" }
+      ]
+    },
+    {
+      "id": "exists",
+      "title": "EXISTS / NOT EXISTS",
+      "category": "Advanced",
+      "description": "Tests whether a subquery returns any rows.",
+      "snippets": [
+        { "label": "EXISTS",     "code": "SELECT name FROM customers c\nWHERE EXISTS (\n  SELECT 1 FROM orders o WHERE o.customer_id = c.id\n);" },
+        { "label": "NOT EXISTS", "code": "SELECT name FROM customers c\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders o WHERE o.customer_id = c.id\n);" }
+      ]
+    },
+    {
+      "id": "pivot",
+      "title": "PIVOT / conditional aggregation",
+      "category": "Advanced",
+      "description": "Transforms row values into columns.",
+      "snippets": [
+        { "label": "Conditional aggregation", "code": "SELECT\n  month,\n  SUM(CASE WHEN product = 'A' THEN sales ELSE 0 END) AS product_a,\n  SUM(CASE WHEN product = 'B' THEN sales ELSE 0 END) AS product_b\nFROM sales\nGROUP BY month;" }
+      ]
+    },
+    {
+      "id": "top-n",
+      "title": "Top N per group",
+      "category": "Advanced",
+      "description": "Retrieves the top N rows for each group.",
+      "snippets": [
+        { "label": "Using ROW_NUMBER", "code": "SELECT * FROM (\n  SELECT *,\n    ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn\n  FROM employees\n) ranked\nWHERE rn <= 3;" }
+      ]
+    },
+    {
+      "id": "string-funcs",
+      "title": "String functions",
+      "category": "Functions",
+      "description": "Commonly used functions for text manipulation.",
+      "snippets": [
+        { "label": "MySQL / PostgreSQL", "code": "SELECT\n  UPPER(name)              AS upper_name,\n  LOWER(name)              AS lower_name,\n  LENGTH(name)             AS name_len,\n  SUBSTRING(name, 1, 3)    AS first_3,\n  CONCAT(first, ' ', last) AS full_name,\n  TRIM('  hello  ')        AS trimmed\nFROM users;" }
+      ]
+    },
+    {
+      "id": "date-funcs",
+      "title": "Date functions",
+      "category": "Functions",
+      "description": "Commonly used functions for working with dates.",
+      "snippets": [
+        { "label": "MySQL",      "code": "SELECT\n  NOW()                       AS current_datetime,\n  CURDATE()                   AS today,\n  YEAR(created_at)            AS yr,\n  MONTH(created_at)           AS mo,\n  DATEDIFF(NOW(), created_at) AS days_old\nFROM users;" },
+        { "label": "PostgreSQL", "code": "SELECT\n  NOW(),\n  CURRENT_DATE,\n  EXTRACT(YEAR FROM created_at)   AS yr,\n  AGE(NOW(), created_at)          AS age,\n  DATE_TRUNC('month', created_at) AS month_start\nFROM users;" }
+      ]
+    },
+    {
+      "id": "coalesce",
+      "title": "COALESCE / NULLIF",
+      "category": "Functions",
+      "description": "Handles NULL values in expressions.",
+      "snippets": [
+        { "label": "COALESCE", "code": "SELECT name, COALESCE(phone, 'N/A') AS phone\nFROM contacts;" },
+        { "label": "NULLIF",   "code": "SELECT NULLIF(col, 0) AS safe_col FROM table_name;" }
+      ]
+    }
+  ]
+}
